@@ -7,8 +7,9 @@ type DefaultSelectPropsType = DetailedHTMLProps<
 >;
 
 type SuperSelectPropsType = DefaultSelectPropsType & {
-  options?: any[];
-  onChangeOption?: (option: any) => void;
+  //options?: any[];
+  options?: Array<{ id: number; value: string | number }>;
+  onChangeOption?: (option: number) => void;
 };
 
 const SuperSelect: React.FC<SuperSelectPropsType> = ({
@@ -27,9 +28,16 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
     : []; // map options with key
 
   const onChangeCallback = (e: ChangeEvent<HTMLSelectElement>) => {
-    // делают студенты
-    onChangeOption?.(Number(e.target.value));
+    const selectedValue = Number(e.target.value); // Преобразуем значение в число
+    if (onChangeOption) {
+      onChangeOption(selectedValue); // Вызываем onChangeOption с выбранным значением
+    }
+
+    if (onChange) {
+      onChange(e); // Если есть onChange, вызываем его
+    }
   };
+
 
   const finalSelectClassName = s.select + (className ? ' ' + className : '');
 
